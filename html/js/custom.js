@@ -23,7 +23,7 @@ function getProducts() {
                             <p>${product.desc}</p>
                             <p style="font-size:7pt; color:#999999;">ID: ${product._id}</p>
                             <div class="d-flex">
-                                <button id="edit" style="font-size:7pt; height:25px; width:70px; " class="btn btn-secondary mr-1">Uppdatera</button>
+                                <button id="edit" style="font-size:7pt; height:25px; width:70px; " class="btn btn-secondary mr-1" onclick={updateProduct(event,this)} value=${product._id}>Uppdatera</button>
                                 <button id="delete" style="font-size:7pt; height:25px; width:70px; " class="btn btn-danger mr-1" onclick={removeProduct(event,this)} value=${product._id}>Ta bort</button>
                             </div>
                         </div>
@@ -83,8 +83,27 @@ async function removeProduct(e, {value}) {
     getProducts();
 }
 
+async function updateProduct(e, {value}){
+    let newName = prompt('Nytt namn');
+    let newDesc = prompt('Ny beskrivning');
+    name = newName;
+    desc = newDesc;
+    console.log(name, desc);
+
+     await fetch(`http://localhost:3001/api/products/${value}`, {
+        method:"PATCH",
+        headers: {
+            'Accept': 'application/json, text/plain */*',
+            'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({"name": name, "desc": desc})
+    })
+    .then(result => console.log(result))
+    .catch(error => console.log(error));  
+    getProducts(); 
+}
 
 document.getElementById('getProducts').addEventListener('click', getProducts);
 document.getElementById('addProduct').addEventListener('click', initProductForm);
 document.getElementById('addProductForm').addEventListener('submit', submitProduct);
-document.getElementById('delete').addEventListener('click', removeProduct);
+//document.getElementById('delete').addEventListener('click', removeProduct);

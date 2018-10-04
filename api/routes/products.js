@@ -47,7 +47,6 @@ route.delete('/:productid', (req, res, next) => {
     Product.remove({ _id: id })
     .exec()
     .then(res => {
-        console.log(res);
         res.status(200).json({ message: "Produkt borttagen" });
     })
     .catch((err) => {
@@ -57,22 +56,22 @@ route.delete('/:productid', (req, res, next) => {
 });
 
 
-// route.patch('/:productId',(req, res, next) => {
-//     const id = req.params.productId;
-//     const updateOps = { name:req.body.name, desc: req.body.desc};
-//      Product.update({ _id : id }, { $set : updateOps})
-//         .exec()
-//         .then(result => {
-//             console.log(result);
-//             res.status(200).json(result);
-//         })
-//         .catch(err =>{
-//             console.log(err);
-//             res.status(500).json({
-//             error: err
-//     });
-// });
-// })
+route.patch('/:productId',(req, res, next) => {
+    const id = req.params.productId;
+    const updateOps = { name:req.body.name, desc: req.body.desc};
+     Product.update({ _id : id }, { $set : updateOps})
+        .exec()
+        .then(result => {
+            console.log(result);
+            res.status(200).json(result);
+        })
+        .catch(err =>{
+            console.log(err);
+            res.status(500).json({
+            error: err
+    });
+});
+})
 
 //Export - Make Public
 module.exports = route;
